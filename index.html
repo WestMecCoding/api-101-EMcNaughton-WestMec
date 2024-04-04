@@ -5,9 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <h1>hello from index.html</h1>
+    <h1>Global Average Temperatures 1880 - 2023</h1>
+    <canvas id="myChart"></canvas>
     <script>
       window.addEventListener("load", fetchData);
       function fetchData() {
@@ -17,7 +19,8 @@
           if (xhr.readyState === 4 && xhr.status === 200) {
             let data = xhr.responseText;
             const globalTemps = processData(data);
-            console.log(globalTemps);
+            renderChart(globalTemps);
+            // console.log(globalTemps);
           } else {
             console.log("Error", xhr.statusText);
           }
@@ -28,13 +31,40 @@
         const years = [];
         const temps = [];
         rows = data.split("\n").slice(1);
-        rows.map(row => {
-            const cols = row.split(',');
-            years.push(cols[0]);
-            temps.push(14 + parseFloat(cols[1]));
-            // console.log(cols[0]);
+        rows.map((row) => {
+          const cols = row.split(",");
+          years.push(cols[0]);
+          temps.push(14 + parseFloat(cols[1]));
+          // console.log(cols[0]);
         });
-        return {years, temps}
+        return { years, temps };
+      }
+      function renderChart(data) {
+        console.log("Hello from renderChart", data);
+        const ctx = document.getElementById("myChart");
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: data.years,
+            datasets: [
+              {
+                label: "Temperature in Celsius",
+                data: data.temps,
+                fill: false,
+                borderColor: 'rgba(255, 199, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)'
+              },
+            ],
+          },
+          options: {
+            // scales: {
+            //   y: {
+            //     beginAtZero: true,
+            //   },
+            // },
+          },
+        });
       }
     </script>
   </body>
