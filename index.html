@@ -17,6 +17,7 @@
           if (xhr.readyState === 4 && xhr.status === 200) {
             let data = xhr.responseText;
             const globalTemps = processData(data);
+            console.log(globalTemps);
           } else {
             console.log("Error", xhr.statusText);
           }
@@ -24,8 +25,16 @@
         xhr.send();
       }
       function processData(data) {
-        data = data.split("\n").slice(1);
-        console.log(data[0]);
+        const years = [];
+        const temps = [];
+        rows = data.split("\n").slice(1);
+        rows.map(row => {
+            const cols = row.split(',');
+            years.push(cols[0]);
+            temps.push(14 + parseFloat(cols[1]));
+            // console.log(cols[0]);
+        });
+        return {years, temps}
       }
     </script>
   </body>
