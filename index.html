@@ -34,7 +34,7 @@
         rows.map((row) => {
           const cols = row.split(",");
           years.push(cols[0]);
-          temps.push(14 + parseFloat(cols[1]));
+          temps.push(cols[1]);
         });
         return { years, temps };
       }
